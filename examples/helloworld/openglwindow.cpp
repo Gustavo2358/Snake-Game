@@ -81,7 +81,7 @@ void OpenGLWindow::paintGL() {
   glBindVertexArray(m_vao);
 
   // Render a nice colored triangle
-  glDrawArrays(GL_TRIANGLES, 0, 3);
+  glDrawArrays(GL_TRIANGLES, 0, 4);
 
   // End using the VAO
   glBindVertexArray(0);
