@@ -12,7 +12,7 @@ class Snake{
     void paintGL(const GameData &gameData);
     void terminateGL();
 
-    void update(const GameData &gameData, float deltaTime);
+    void update(GameData &gameData, float deltaTime);
   private:
     friend OpenGLWindow;
 
@@ -26,7 +26,7 @@ class Snake{
     GLuint m_ebo{};
 
     glm::vec4 m_color{0.0, 1.0, 0.0, 1.0};
-    float m_scale{0.08f};
+    float m_scale{0.09090909f}; //20 x 20 grid
     glm::vec2 m_translation{glm::vec2(0)};
     
 

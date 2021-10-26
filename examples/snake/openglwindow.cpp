@@ -59,8 +59,10 @@ void OpenGLWindow::update(){
     restart();
     return;
   }
- 
+  if(m_elapsedTimer.elapsed() < 0.25) return; //simulate low frame rate
+  m_elapsedTimer.restart();
   m_snake.update(m_gameData, deltaTime);
+
 }
 
 void OpenGLWindow::paintGL() {

@@ -70,11 +70,16 @@ void Snake::paintGL(const GameData &gameData) {
   
   abcg::glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, nullptr);
 
+  //abcg::glUniform2f(m_translationLoc, m_translation.x - 0.5f, m_translation.y);
+
+  //abcg::glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, nullptr);
+
+
   // End using the VAO
   glBindVertexArray(0);
   // End using the shader program
   glUseProgram(0);
-
+  
 }
 
 void Snake::terminateGL() {
@@ -84,16 +89,23 @@ void Snake::terminateGL() {
 
 }
 
-void Snake::update(const GameData &gameData, float deltaTime) {
+void Snake::update(GameData &gameData, float deltaTime) {
   // Move Snake
-  float rate{0.4};
-  if (gameData.m_input[static_cast<size_t>(Input::Left)])
-    m_translation.x = m_translation.x - rate * deltaTime;
-  if (gameData.m_input[static_cast<size_t>(Input::Right)])
-    m_translation.x = m_translation.x + rate * deltaTime;
-  if (gameData.m_input[static_cast<size_t>(Input::Up)])
-    m_translation.y = m_translation.y + rate * deltaTime;
-  if (gameData.m_input[static_cast<size_t>(Input::Down)])
-  m_translation.y = m_translation.y - rate * deltaTime;
-
+  
+  if (gameData.m_input[static_cast<size_t>(Input::Left)]){
+    m_translation.x = m_translation.x - m_scale;
+    //gameData.m_input.reset();
+  }
+  if (gameData.m_input[static_cast<size_t>(Input::Right)]){
+    m_translation.x = m_translation.x + m_scale;
+    //gameData.m_input.reset();
+  }
+  if (gameData.m_input[static_cast<size_t>(Input::Up)]){
+    m_translation.y = m_translation.y + m_scale;
+    //gameData.m_input.reset();
+  }
+  if (gameData.m_input[static_cast<size_t>(Input::Down)]){
+    m_translation.y = m_translation.y - m_scale;
+    //gameData.m_input.reset();
+  }
 }
