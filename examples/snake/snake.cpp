@@ -89,23 +89,21 @@ void Snake::terminateGL() {
 
 }
 
-void Snake::update(GameData &gameData, float deltaTime) {
+void Snake::update(GameData &gameData) {
   // Move Snake
   
   if (gameData.m_input[static_cast<size_t>(Input::Left)]){
     m_translation.x = m_translation.x - m_scale;
-    //gameData.m_input.reset();
   }
   if (gameData.m_input[static_cast<size_t>(Input::Right)]){
     m_translation.x = m_translation.x + m_scale;
-    //gameData.m_input.reset();
   }
   if (gameData.m_input[static_cast<size_t>(Input::Up)]){
     m_translation.y = m_translation.y + m_scale;
-    //gameData.m_input.reset();
   }
   if (gameData.m_input[static_cast<size_t>(Input::Down)]){
     m_translation.y = m_translation.y - m_scale;
-    //gameData.m_input.reset();
   }
 }
+
+

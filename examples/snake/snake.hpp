@@ -5,6 +5,7 @@
 #include "gamedata.hpp"
 
 class OpenGLWindow;
+class SnakeBody;
 
 class Snake{
   public:
@@ -12,9 +13,11 @@ class Snake{
     void paintGL(const GameData &gameData);
     void terminateGL();
 
-    void update(GameData &gameData, float deltaTime);
+    void update(GameData &gameData);
   private:
     friend OpenGLWindow;
+    friend SnakeBody;
+    
 
     GLuint m_program{};
     GLint m_translationLoc{};

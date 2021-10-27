@@ -8,6 +8,9 @@
 #include "abcg.hpp"
 #include "gamedata.hpp"
 #include "snake.hpp"
+#include "snakebody.hpp"
+
+class SnakeBody;
 
 class OpenGLWindow : public abcg::OpenGLWindow {
  protected:
@@ -19,6 +22,8 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   void terminateGL() override;
 
  private:
+  friend SnakeBody; 
+
   GLuint m_objectsProgram{};
 
   int m_viewportWidth{};
@@ -27,6 +32,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   GameData m_gameData;
 
+  SnakeBody m_snakebody;
   Snake m_snake;
 
   int m_delay{200};

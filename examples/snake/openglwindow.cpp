@@ -48,10 +48,12 @@ void OpenGLWindow::restart() {
   m_gameData.m_state = State::Playing;
 
   m_snake.initializeGL(m_objectsProgram);
+  m_snakebody.initializeGL(m_objectsProgram, 8, m_snake);
+  m_gameData.m_input.set(static_cast<size_t>(Input::Up));
 }
 
 void OpenGLWindow::update(){
-  float deltaTime{static_cast<float>(getDeltaTime())};
+  
 
   // Wait 5 seconds before restarting
   if (m_gameData.m_state != State::Playing &&
@@ -59,9 +61,14 @@ void OpenGLWindow::update(){
     restart();
     return;
   }
-  if(m_elapsedTimer.elapsed() < 0.25) return; //simulate low frame rate
+  
+  
+  if(m_elapsedTimer.elapsed() < 0.1f) return; //simulate low frame rate
   m_elapsedTimer.restart();
-  m_snake.update(m_gameData, deltaTime);
+  
+  m_snakebody.update(m_snake);
+  m_snake.update(m_gameData);
+  
 
 }
 
@@ -81,6 +88,7 @@ void OpenGLWindow::paintGL() {
   //m_elapsedTimer.restart();
     
   m_snake.paintGL(m_gameData);
+  m_snakebody.paintGL();
 
 }
 
@@ -107,4 +115,5 @@ void OpenGLWindow::terminateGL() {
   glDeleteProgram(m_objectsProgram);
   
   m_snake.terminateGL();
+  m_snakebody.terminateGL();
 }
