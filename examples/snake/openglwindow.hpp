@@ -9,6 +9,7 @@
 #include "gamedata.hpp"
 #include "snake.hpp"
 #include "snakebody.hpp"
+#include "fruits.hpp"
 
 class SnakeBody;
 
@@ -31,9 +32,9 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
 
   GameData m_gameData;
-
   SnakeBody m_snakebody;
   Snake m_snake;
+  Fruits m_fruits;
 
   int m_delay{200};
   abcg::ElapsedTimer m_elapsedTimer;
@@ -45,6 +46,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
 
   void restart();
   void update();
+  void checkCollisions();
 
   
   

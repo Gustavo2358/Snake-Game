@@ -48,7 +48,8 @@ void OpenGLWindow::restart() {
   m_gameData.m_state = State::Playing;
 
   m_snake.initializeGL(m_objectsProgram);
-  m_snakebody.initializeGL(m_objectsProgram, 8, m_snake);
+  m_snakebody.initializeGL(m_objectsProgram, 1, m_snake);
+  m_fruits.initializeGL(m_objectsProgram);
   m_gameData.m_input.set(static_cast<size_t>(Input::Up));
 }
 
@@ -68,7 +69,10 @@ void OpenGLWindow::update(){
   
   m_snakebody.update(m_snake);
   m_snake.update(m_gameData);
-  
+
+  if (m_gameData.m_state == State::Playing) {
+    checkCollisions();
+  }
 
 }
 
@@ -89,6 +93,7 @@ void OpenGLWindow::paintGL() {
     
   m_snake.paintGL(m_gameData);
   m_snakebody.paintGL();
+  m_fruits.paintGL(m_gameData);
 
 }
 
@@ -116,4 +121,19 @@ void OpenGLWindow::terminateGL() {
   
   m_snake.terminateGL();
   m_snakebody.terminateGL();
+  m_fruits.terminateGL();
+}
+
+void OpenGLWindow::checkCollisions() {
+  // Check collision between snake and fruits
+
+  const auto asteroidTranslation{m_fruits.m_translation};
+  const auto distance{
+    glm::distance(m_snake.m_translation, asteroidTranslation)};
+
+  if (distance < m_snake.m_scale * 0.1f + m_fruits.m_scale * 0.1f) {
+    m_fruits.spawnFruit();
+  }
+
+  
 }

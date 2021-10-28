@@ -1,14 +1,27 @@
-#include "snake.hpp"
+#include "fruits.hpp"
 
 
-void Snake::initializeGL(GLuint program) {
+void Fruits::initializeGL(GLuint program) {
+  terminateGL();
+
+  // Start pseudo-random number generator
+  
+
   m_program = program;
 
   m_colorLoc = abcg::glGetUniformLocation(m_program, "color");
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
+  
+  spawnFruit();
+  
+}
 
-  m_translation = glm::vec2(0);
+void Fruits::spawnFruit(){
+  m_randomEngine.seed(
+      std::chrono::steady_clock::now().time_since_epoch().count());
+  m_translation = glm::vec2(m_randomDist(m_randomEngine)*m_scale, 
+                            m_randomDist(m_randomEngine)*m_scale);
   
 
   std::array vertices{glm::vec2(1.0f, 1.0f), 
@@ -53,15 +66,16 @@ void Snake::initializeGL(GLuint program) {
    // End of binding to current VAO
   glBindVertexArray(0);
 
-
 }
 
-void Snake::paintGL(const GameData &gameData) {
+void Fruits::paintGL(const GameData &gameData) {
   if (gameData.m_state != State::Playing) return;
   // Start using the shader program
   glUseProgram(m_program);
   // Start using the VAO
   glBindVertexArray(m_vao);
+
+  
 
   //uniform variables
   abcg::glUniform1f(m_scaleLoc, m_scale);
@@ -70,11 +84,6 @@ void Snake::paintGL(const GameData &gameData) {
   
   abcg::glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, nullptr);
 
-  //abcg::glUniform2f(m_translationLoc, m_translation.x - 0.5f, m_translation.y);
-
-  //abcg::glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, nullptr);
-
-
   // End using the VAO
   glBindVertexArray(0);
   // End using the shader program
@@ -82,32 +91,15 @@ void Snake::paintGL(const GameData &gameData) {
   
 }
 
-void Snake::terminateGL() {
+void Fruits::terminateGL() {
   abcg::glDeleteBuffers(1, &m_vbo);
   abcg::glDeleteBuffers(1, &m_ebo);
   abcg::glDeleteVertexArrays(1, &m_vao);
 
 }
 
-void Snake::update(GameData &gameData) {
-  // Move Snake
+void Fruits::update() {
   
-  if (gameData.m_input[static_cast<size_t>(Input::Left)]){
-    m_translation.x = m_translation.x - m_scale; 
-    if(m_translation.x <= -1-m_scale) m_translation.x = 1.0f - m_scale; 
-  }
-  if (gameData.m_input[static_cast<size_t>(Input::Right)]){
-    m_translation.x = m_translation.x + m_scale;
-    if(m_translation.x >= 1) m_translation.x = -1.0f;
-  }
-  if (gameData.m_input[static_cast<size_t>(Input::Up)]){
-    m_translation.y = m_translation.y + m_scale;
-    if(m_translation.y >= 1) m_translation.y = -1.0f;
-  }
-  if (gameData.m_input[static_cast<size_t>(Input::Down)]){
-    m_translation.y = m_translation.y - m_scale;
-    if(m_translation.y <= -1-m_scale) m_translation.y = 1.0f - m_scale;
-  }
 }
 
 
