@@ -2,21 +2,14 @@
 
 #include <cppitertools/itertools.hpp>
 
-void SnakeBody::initializeGL(GLuint program, int length, Snake head){
+void SnakeBody::initializeGL(GLuint program){
+  
 
   m_program = program;
   m_colorLoc = abcg::glGetUniformLocation(m_program, "color");
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
-
-// Create body
-  m_bodypieces.clear();
-  m_bodypieces.resize(length);
-
-  for (int i = 0 ; i < length; i++){
-      //TODO: get translation coordinates from the previous
-      m_bodypieces[i] = createPiece(head.m_translation, i);
-  }
+  
 }
 
 void SnakeBody::paintGL(){
@@ -45,18 +38,28 @@ void SnakeBody::terminateGL(){
 }
 
 void SnakeBody::update(const Snake &snake){
+ 
+    
     //update m_translation using the previous part of the snake body
-    int temp = (int)m_bodypieces.size() - 1;
-    for (int i = temp; i >= 0; i-- ){
-        if(i == 0)
-           m_bodypieces[i].m_translation = snake.m_translation;
-        else
+    int size = (int)m_bodypieces.size() - 1;
+    for (int i = size; i >= 0; i-- ){
+        if(i == 0){
+            m_bodypieces[i].m_translation = snake.m_translation;
+            m_bodypieces[i].x = snake.x;
+            m_bodypieces[i].y = snake.y;
+        }
+           
+        else{
             m_bodypieces[i].m_translation = m_bodypieces[i-1].m_translation;
+            m_bodypieces[i].x = m_bodypieces[i-1].x;
+            m_bodypieces[i].y = m_bodypieces[i-1].y;
+        }
+
     }
         
 }
 
-SnakeBody::BodyPiece SnakeBody::createPiece(glm::vec2 translation, int index){
+SnakeBody::BodyPiece SnakeBody::createPiece(Snake snake, int index){
 
   BodyPiece bodypiece;
 
@@ -65,11 +68,15 @@ SnakeBody::BodyPiece SnakeBody::createPiece(glm::vec2 translation, int index){
   m_scaleLoc = abcg::glGetUniformLocation(m_program, "scale");
   m_translationLoc = abcg::glGetUniformLocation(m_program, "translation");
   
-  if(index == 0)
-    bodypiece.m_translation = glm::vec2(translation.x, translation.y - 0.09090909f);
-  else
-    bodypiece.m_translation = glm::vec2(m_bodypieces[index-1].m_translation.x, m_bodypieces[index-1].m_translation.y - 0.09090909f);
-  
+  if(index == 0){
+      bodypiece.m_translation = glm::vec2(snake.m_translation.x, snake.m_translation.y);
+      bodypiece.x = snake.x;
+      bodypiece.y = snake.x;
+  }
+  else{
+      bodypiece.m_translation = glm::vec2(m_bodypieces[index-1].m_translation.x, m_bodypieces[index-1].m_translation.y);
+  }
+    
 
   std::array vertices{glm::vec2(1.0f, 1.0f), 
                       glm::vec2(1.0f, 0.0f),

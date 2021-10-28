@@ -57,6 +57,8 @@ void Snake::initializeGL(GLuint program) {
 }
 
 void Snake::paintGL(const GameData &gameData) {
+  
+  
   if (gameData.m_state != State::Playing) return;
   // Start using the shader program
   glUseProgram(m_program);
@@ -69,11 +71,6 @@ void Snake::paintGL(const GameData &gameData) {
   abcg::glUniform4f(m_colorLoc, m_color[0], m_color[1], m_color[2], m_color[3]);
   
   abcg::glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, nullptr);
-
-  //abcg::glUniform2f(m_translationLoc, m_translation.x - 0.5f, m_translation.y);
-
-  //abcg::glDrawElements(GL_TRIANGLES, 2 * 3, GL_UNSIGNED_INT, nullptr);
-
 
   // End using the VAO
   glBindVertexArray(0);
@@ -90,24 +87,45 @@ void Snake::terminateGL() {
 }
 
 void Snake::update(GameData &gameData) {
-  // Move Snake
   
-  if (gameData.m_input[static_cast<size_t>(Input::Left)]){
-    m_translation.x = m_translation.x - m_scale; 
-    if(m_translation.x <= -1-m_scale) m_translation.x = 1.0f - m_scale; 
+  // Move Snake
+  if(gameData.m_state == State::Playing){
+    if (gameData.m_input[static_cast<size_t>(Input::Left)]){
+      m_translation.x = m_translation.x - m_scale; 
+      x--;
+      if(m_translation.x <= -1-m_scale){
+        m_translation.x = 1.0f - m_scale;
+        x = 10;
+      }  
+      
+    }
+    if (gameData.m_input[static_cast<size_t>(Input::Right)]){
+      m_translation.x = m_translation.x + m_scale;
+      x++;
+      if(m_translation.x >= 1) {
+        m_translation.x = -1.0f;
+        x = -11;
+      }
+    }
+    if (gameData.m_input[static_cast<size_t>(Input::Up)]){
+      m_translation.y = m_translation.y + m_scale;
+      y++;
+      if(m_translation.y >= 1){
+        m_translation.y = -1.0f;
+        y = -11;
+      } 
+    }
+    if (gameData.m_input[static_cast<size_t>(Input::Down)]){
+      m_translation.y = m_translation.y - m_scale;
+      y--;
+      if(m_translation.y <= -1-m_scale){
+        m_translation.y = 1.0f - m_scale;
+        y = 10;
+      } 
+    
+    }
   }
-  if (gameData.m_input[static_cast<size_t>(Input::Right)]){
-    m_translation.x = m_translation.x + m_scale;
-    if(m_translation.x >= 1) m_translation.x = -1.0f;
-  }
-  if (gameData.m_input[static_cast<size_t>(Input::Up)]){
-    m_translation.y = m_translation.y + m_scale;
-    if(m_translation.y >= 1) m_translation.y = -1.0f;
-  }
-  if (gameData.m_input[static_cast<size_t>(Input::Down)]){
-    m_translation.y = m_translation.y - m_scale;
-    if(m_translation.y <= -1-m_scale) m_translation.y = 1.0f - m_scale;
-  }
+  
 }
 
 

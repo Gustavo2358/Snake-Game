@@ -2,6 +2,7 @@
 #define ASTEROIDS_HPP_
 
 #include <vector>
+#include <fmt/core.h>
 
 #include "abcg.hpp"
 #include "gamedata.hpp"
@@ -11,7 +12,7 @@ class OpenGLWindow;
 
 class SnakeBody {
   public:
-    void initializeGL(GLuint program, int length, Snake head);
+    void initializeGL(GLuint program);
     void paintGL();
     void terminateGL();
 
@@ -33,11 +34,16 @@ class SnakeBody {
       glm::vec4 m_color{0.0f, 1.0f, 0.0f, 1.0f};
       float m_scale{0.09090909f};
       glm::vec2 m_translation{glm::vec2(0)};
+
+      //coordinate system
+      int x = 0;
+      int y = 0;
     };
 
+    int m_length{0};
     std::vector<BodyPiece> m_bodypieces;
 
-    SnakeBody::BodyPiece createPiece(glm::vec2 translation, int index);
+    SnakeBody::BodyPiece createPiece(Snake snake, int index);
 
 
 };
