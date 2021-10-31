@@ -94,9 +94,6 @@ void OpenGLWindow::update(){
   if (m_gameData.m_state == State::Playing) {
     checkCollisions();
   }
-  
-  //CRIAR UMA SISTEMA DE COORDENADAS PARA A CABEÇA E CADA PARTE DO CORPO
-  
 
 }
 
@@ -113,10 +110,6 @@ void OpenGLWindow::paintGL() {
 
   // Adjust viewport
   glViewport(0, 0, m_viewportWidth, m_viewportHeight);
-
-  // Check whether to render the next polygon
-  //if (m_elapsedTimer.elapsed() < m_delay / 1000.0) return;
-  //m_elapsedTimer.restart();
     
   m_snake.paintGL(m_gameData);
   m_snakebody.paintGL();
@@ -125,7 +118,6 @@ void OpenGLWindow::paintGL() {
 }
 
 void OpenGLWindow::paintUI() {
-  // Parent class will show fullscreen button and FPS meter
   abcg::OpenGLWindow::paintUI();
 
   {
@@ -191,7 +183,7 @@ void OpenGLWindow::checkCollisions() {
     for (int i = 1; i < (int)m_snakebody.m_bodypieces.size(); i++) { 
       
       if (m_snake.x == m_snakebody.m_bodypieces[i].x && m_snake.y == m_snakebody.m_bodypieces[i].y ) {
-        fmt::print("GAME OVER!!!");
+        
         m_gameData.m_state = State::GameOver;
         m_gameData.m_input.reset();
         m_restartWaitTimer.restart();
