@@ -1,7 +1,7 @@
 #ifndef OPENGLWINDOW_HPP_
 #define OPENGLWINDOW_HPP_
 
-#include <array>
+#include <imgui.h>
 
 #include <random>
 
@@ -40,7 +40,7 @@ class OpenGLWindow : public abcg::OpenGLWindow {
   abcg::ElapsedTimer m_elapsedTimer;
   abcg::ElapsedTimer m_restartWaitTimer;
 
-  //ImFont* m_font{};
+  ImFont* m_font{};
 
   std::default_random_engine m_randomEngine;
 

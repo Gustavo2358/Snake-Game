@@ -89,42 +89,42 @@ void Snake::terminateGL() {
 void Snake::update(GameData &gameData) {
   
   // Move Snake
-  if(gameData.m_state == State::Playing){
-    if (gameData.m_input[static_cast<size_t>(Input::Left)]){
-      m_translation.x = m_translation.x - m_scale; 
-      x--;
-      if(m_translation.x <= -1-m_scale){
-        m_translation.x = 1.0f - m_scale;
-        x = 10;
-      }  
-      
-    }
-    if (gameData.m_input[static_cast<size_t>(Input::Right)]){
-      m_translation.x = m_translation.x + m_scale;
-      x++;
-      if(m_translation.x >= 1) {
-        m_translation.x = -1.0f;
-        x = -11;
-      }
-    }
-    if (gameData.m_input[static_cast<size_t>(Input::Up)]){
-      m_translation.y = m_translation.y + m_scale;
-      y++;
-      if(m_translation.y >= 1){
-        m_translation.y = -1.0f;
-        y = -11;
-      } 
-    }
-    if (gameData.m_input[static_cast<size_t>(Input::Down)]){
-      m_translation.y = m_translation.y - m_scale;
-      y--;
-      if(m_translation.y <= -1-m_scale){
-        m_translation.y = 1.0f - m_scale;
-        y = 10;
-      } 
+  
+  if (gameData.m_input[static_cast<size_t>(Input::Left)]){
+    m_translation.x = m_translation.x - m_scale; 
+    x--;
+    if(m_translation.x <= -1-m_scale){
+      m_translation.x = 1.0f - m_scale;
+      x = 10;
+    }  
     
+  }
+  if (gameData.m_input[static_cast<size_t>(Input::Right)]){
+    m_translation.x = m_translation.x + m_scale;
+    x++;
+    if(m_translation.x >= 1) {
+      m_translation.x = -1.0f;
+      x = -11;
     }
   }
+  if (gameData.m_input[static_cast<size_t>(Input::Up)]){
+    m_translation.y = m_translation.y + m_scale;
+    y++;
+    if(m_translation.y >= 1){
+      m_translation.y = -1.0f;
+      y = -11;
+    } 
+  }
+  if (gameData.m_input[static_cast<size_t>(Input::Down)]){
+    m_translation.y = m_translation.y - m_scale;
+    y--;
+    if(m_translation.y <= -1-m_scale){
+      m_translation.y = 1.0f - m_scale;
+      y = 10;
+    } 
+  
+  }
+  
   
 }
 

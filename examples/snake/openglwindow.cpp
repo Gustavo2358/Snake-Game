@@ -11,38 +11,47 @@
 
 void OpenGLWindow::handleEvent(SDL_Event &event) {
   
-  
-  // Keyboard events
-  if (event.type == SDL_KEYDOWN) {
-    if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w){
-      if (!m_gameData.m_input[static_cast<size_t>(Input::Down)]){
-        m_gameData.m_input.reset();
-        m_gameData.m_input.set(static_cast<size_t>(Input::Up));
+  if(m_gameData.m_state == State::Playing){
+    // Keyboard events
+    if (event.type == SDL_KEYDOWN) {
+      if (event.key.keysym.sym == SDLK_UP || event.key.keysym.sym == SDLK_w){
+        if (!m_gameData.m_input[static_cast<size_t>(Input::Down)]){
+          m_gameData.m_input.reset();
+          m_gameData.m_input.set(static_cast<size_t>(Input::Up));
+        }
       }
+      if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s){
+        if (!m_gameData.m_input[static_cast<size_t>(Input::Up)]){
+          m_gameData.m_input.reset(); 
+          m_gameData.m_input.set(static_cast<size_t>(Input::Down));
+        }
+        
+      }
+      if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a){
+        if (!m_gameData.m_input[static_cast<size_t>(Input::Right)]){
+          m_gameData.m_input.reset();
+          m_gameData.m_input.set(static_cast<size_t>(Input::Left));
+        }
+      } 
+      if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d){
+        if (!m_gameData.m_input[static_cast<size_t>(Input::Left)]){
+          m_gameData.m_input.reset();
+          m_gameData.m_input.set(static_cast<size_t>(Input::Right));
+        }
+      }  
     }
-    if (event.key.keysym.sym == SDLK_DOWN || event.key.keysym.sym == SDLK_s){
-      if (!m_gameData.m_input[static_cast<size_t>(Input::Up)]){
-        m_gameData.m_input.reset(); 
-        m_gameData.m_input.set(static_cast<size_t>(Input::Down));
-      }
-      
-    }
-    if (event.key.keysym.sym == SDLK_LEFT || event.key.keysym.sym == SDLK_a){
-      if (!m_gameData.m_input[static_cast<size_t>(Input::Right)]){
-        m_gameData.m_input.reset();
-        m_gameData.m_input.set(static_cast<size_t>(Input::Left));
-      }
-    } 
-    if (event.key.keysym.sym == SDLK_RIGHT || event.key.keysym.sym == SDLK_d){
-      if (!m_gameData.m_input[static_cast<size_t>(Input::Left)]){
-        m_gameData.m_input.reset();
-        m_gameData.m_input.set(static_cast<size_t>(Input::Right));
-      }
-    }  
   }
 }
 
 void OpenGLWindow::initializeGL() {
+   // Load a new font
+  ImGuiIO &io{ImGui::GetIO()};
+  auto filename{getAssetsPath() + "Inconsolata-Medium.ttf"};
+  m_font = io.Fonts->AddFontFromFileTTF(filename.c_str(), 60.0f);
+  if (m_font == nullptr) {
+    throw abcg::Exception{abcg::Exception::Runtime("Cannot load font file")};
+  }
+  
   // Enable Z-buffer test
   glEnable(GL_DEPTH_TEST);
 
@@ -54,7 +63,7 @@ void OpenGLWindow::initializeGL() {
 }
 
 void OpenGLWindow::restart() {
-  m_gameData.m_state = State::Playing;
+
 
   m_snake.initializeGL(m_objectsProgram);
   m_snakebody.initializeGL(m_objectsProgram);
@@ -63,6 +72,7 @@ void OpenGLWindow::restart() {
   m_gameData.m_input.set(static_cast<size_t>(Input::Up));
   m_snakebody.m_bodypieces.clear();
   m_snakebody.m_length = 0;
+  m_gameData.m_state = State::Playing;
 }
 
 void OpenGLWindow::update(){
@@ -128,13 +138,13 @@ void OpenGLWindow::paintUI() {
                            ImGuiWindowFlags_NoTitleBar |
                            ImGuiWindowFlags_NoInputs};
     ImGui::Begin(" ", nullptr, flags);
-    //ImGui::PushFont(m_font);
+    ImGui::PushFont(m_font);
 
     if (m_gameData.m_state == State::GameOver) {
       ImGui::Text("Game Over!");
     }
 
-    //ImGui::PopFont();
+    ImGui::PopFont();
     ImGui::End();
   }
 }
