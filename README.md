@@ -1,14 +1,9 @@
-ABCg
+Snake Game
 ======
 
-Development framework accompanying the course MCTA008-17 Computer Graphics at [UFABC](https://www.ufabc.edu.br/).
-
+A simple snake game developed using C++, OpenGl and the [ABCg](https://github.com/hbatagelo/abcg), a development framework accompanying the Computer Graphics course at [UFABC] (https://www.ufabc.edu.br/).
 ----
 
-### Credits
 
-Developed by Harlen Batagelo.
 
-### License
 
-ABCg is licensed under the MIT License. See [LICENSE](https://github.com/hbatagelo/abcg/blob/main/LICENSE) for more information.
